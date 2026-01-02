@@ -186,3 +186,10 @@ According to \cite{Hosseini2026MedicalUnity}, the AI Medical Unity system ...
 
 DOI: 10.5281/zenodo.18135378
 DOI: [10.5281/zenodo.18135378](https://zenodo.org/record/18135378)
+# Documentation — AI Medical Unity
+
+This folder contains:
+- Architecture.pdf → Full system architecture
+- SystemOverview.pdf → Overview of all system modules
+- IntegrationGuide.pdf → How to integrate AI Controller with FEM simulations
+- ChangeLog.md → Version history
