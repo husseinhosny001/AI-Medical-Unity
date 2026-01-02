@@ -180,3 +180,9 @@ AI Researcher — Biomedical Systems Innovator
 
 ### ✨ With Respect & Responsibility
 **Hussein Hosny**
+According to \cite{Hosseini2026MedicalUnity}, the AI Medical Unity system ...
+
+كما تم تطويره في \cite{Hosseini2026MedicalUnity}، نظام وحدة الذكاء الاصطناعي الطبية ...
+
+DOI: 10.5281/zenodo.18135378
+DOI: [10.5281/zenodo.18135378](https://zenodo.org/record/18135378)
