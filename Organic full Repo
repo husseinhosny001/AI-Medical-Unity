@@ -1,0 +1,63 @@
+Script to generate the folder structure and initial files for OrganicAI GitHub repository
+
+import os
+
+Base directory
+
+base_dir = '/mnt/data/OrganicAI_Repository'
+
+Folder structure
+
+folders = [ 'docs', 'papers', 'src/FEM', 'src/AI', 'models', 'mesh', 'clinical', 'tests', 'examples', 'licenses' ]
+
+Files content template
+
+file_templates = { 'docs/README_System.md': '# OrganicAI System Documentation\nThis folder contains full documentation for the OrganicAI Medical FEM Core.', 'docs/Installation.md': '# Installation Guide\nInstructions to install and setup the system.', 'docs/UserGuide.md': '# User Guide\nHow to run simulations and use the platform.', 'docs/ClinicalGuide.md': '# Clinical Scenarios Guide\nDetailed clinical use cases.',
+
+'papers/OrganicAI_FEM_IEEE.pdf': 'Dummy PDF content for IEEE paper.',
+'papers/Preprint.pdf': 'Dummy PDF content for preprint.',
+'papers/BibTeX.bib': '@article{sample2026,\n  title={OrganicAI Medical FEM Core},\n  author={Hussein Hosny},\n  journal={IEEE Transactions on Medical AI},\n  year={2026},\n  volume={1},\n  pages={1-20}\n}',
+
+'src/__init__.py': '',
+'src/FEM/heart.py': '# Heart FEM model placeholder\nclass Heart:\n    def __init__(self):\n        pass',
+'src/FEM/kidney.py': '# Kidney FEM model placeholder\nclass Kidney:\n    def __init__(self):\n        pass',
+'src/FEM/liver.py': '# Liver FEM model placeholder\nclass Liver:\n    def __init__(self):\n        pass',
+'src/FEM/multi_organ_system.py': '# Multi-organ system placeholder\nclass MultiOrganSystem:\n    def __init__(self):\n        pass',
+
+'src/AI/controller.py': '# AI Controller placeholder\nclass AIController:\n    def __init__(self):\n        pass',
+'src/AI/optimizer.py': '# Optimizer placeholder\nclass Optimizer:\n    def optimize(self):\n        pass',
+'src/AI/utils.py': '# Utility functions placeholder\ndef helper():\n    pass',
+
+'models/general_organ_model.json': '{"heart":{}, "kidney":{}, "liver":{}}',
+'models/parameters.yaml': 'parameters:\n  heart:\n    alpha: 1.0\n    beta: 0.5',
+'models/immune_model.json': '{"M":0, "D":0, "T":0, "C":0}',
+
+'mesh/heart_mesh.xdmf': 'Dummy mesh file for heart',
+'mesh/kidney_mesh.xdmf': 'Dummy mesh file for kidney',
+'mesh/liver_mesh.xdmf': 'Dummy mesh file for liver',
+
+'clinical/case_study_1.py': '# Case study 1 placeholder\ndef run_case1():\n    pass',
+'clinical/case_study_2.py': '# Case study 2 placeholder\ndef run_case2():\n    pass',
+'clinical/case_study_3.py': '# Case study 3 placeholder\ndef run_case3():\n    pass',
+
+'tests/test_heart.py': '# Test Heart FEM model\ndef test_heart():\n    pass',
+'tests/test_ai_controller.py': '# Test AI Controller\ndef test_ai():\n    pass',
+'tests/test_multi_organ.py': '# Test Multi-organ system\ndef test_multi():\n    pass',
+
+'examples/example_simulation.py': '# Example simulation script\ndef run_simulation():\n    pass',
+'examples/example_visualization.py': '# Example visualization script\ndef visualize():\n    pass',
+
+'licenses/LICENSE.txt': 'MIT License Placeholder',
+'licenses/README_License.md': '# License Information\nAll components are licensed under MIT unless specified.'
+
+}
+
+Create folders
+
+for folder in folders: os.makedirs(os.path.join(base_dir, folder), exist_ok=True)
+
+Create files
+
+for file_path, content in file_templates.items(): full_path = os.path.join(base_dir, file_path) with open(full_path, 'w') as f: f.write(content)
+
+print(f'All files and folders created successfully in {base_dir}')
