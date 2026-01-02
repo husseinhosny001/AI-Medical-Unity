@@ -37,3 +37,18 @@ Built for:
 ---
 
 ## 📁 Repository Structure
+docs/         → System & user documentation papers/       → Scientific publications (IEEE format) src/FEM/      → Core finite-element solvers src/AI/       → AI-controller & adaptive models models/       → Mathematical models & validation data mesh/         → Medical mesh files clinical/     → Clinical simulation cases tests/        → Validation & QA examples/     → Usage demos licenses/     → Legal documentation
+---
+
+## 🎯 Scientific Mission
+
+To provide a clinically-reliable,
+reproducible,
+scientifically-validated multi-organ simulation platform
+powered by intelligent control.
+
+---
+
+## 📜 Citation
+
+Publication DOI coming soon.
