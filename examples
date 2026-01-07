@@ -1,2 +1,34 @@
 /examples/run_soft_tissue_demo.py
 هذا الملف سيشغل النظام بالكامل.
+/examples/run_soft_tissue_demo.py
+import numpy as np
+from src.FEM.core import SoftTissueFEM2D
+from src.FEM.mesh_loader import SimpleMeshGenerator
+
+
+print("=== AI Medical Unity — FEM Demo ===")
+
+# 1. Create mesh
+mesh = SimpleMeshGenerator(width=1.0, height=1.0, nx=6, ny=6)
+nodes, elements = mesh.generate()
+
+# 2. Create tissue model
+model = SoftTissueFEM2D(
+    young_modulus=50000,
+    poisson_ratio=0.45
+)
+
+model.load_mesh(nodes, elements)
+
+# 3. Apply gravity-like force
+bottom_node = np.argmin(nodes[:, 1])
+model.apply_force(bottom_node, fy=-10)
+
+# 4. Fix top nodes (anchor)
+top_nodes = np.where(nodes[:, 1] == nodes[:, 1].max())[0]
+
+# 5. Solve FEM
+displacements = model.solve(fixed_nodes=top_nodes)
+
+print("Simulation complete.")
+print("Example node displacement:", displacements[bottom_node])
