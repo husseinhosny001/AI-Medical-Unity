@@ -1,0 +1,145 @@
+/src/FEM/core.py
+import numpy as np
+
+
+class SoftTissueFEM2D:
+    """
+    Simple 2D Linear Elastic FEM Model
+    Medical-Oriented: Soft Tissue Simulation
+    
+    This model solves:
+        K u = F
+    Where:
+        K = stiffness matrix
+        u = displacement
+        F = applied forces
+        
+    Tissue assumed:
+        - Small deformation
+        - Isotropic linear elastic
+    """
+
+    def __init__(self, young_modulus=5e4, poisson_ratio=0.45):
+        self.E = young_modulus          # Soft tissue stiffness
+        self.nu = poisson_ratio         # Near-incompressible
+        self.mesh_nodes = None
+        self.mesh_elements = None
+        self.K = None                   # Global stiffness
+        self.F = None                   # Forces
+        self.u = None                   # Displacements
+
+    def load_mesh(self, nodes, elements):
+        """
+        nodes: Nx2 array
+        elements: Mx3 triangular connectivity
+        """
+        self.mesh_nodes = nodes
+        self.mesh_elements = elements
+
+    def build_stiffness_matrix(self):
+        """
+        Construct global stiffness matrix
+        using plane stress assumption
+        """
+        num_nodes = len(self.mesh_nodes)
+        self.K = np.zeros((2*num_nodes, 2*num_nodes))
+
+        D = self._constitutive_matrix()
+
+        for element in self.mesh_elements:
+            ke = self._element_stiffness(element, D)
+            self._assemble_global_matrix(element, ke)
+
+    def apply_force(self, node_index, fx=0, fy=-1):
+        """
+        Apply force at a node (N)
+        """
+        if self.F is None:
+            self.F = np.zeros(len(self.mesh_nodes) * 2)
+
+        self.F[2*node_index] = fx
+        self.F[2*node_index + 1] = fy
+
+    def solve(self, fixed_nodes):
+        """
+        Apply boundary conditions + solve
+        """
+        num_nodes = len(self.mesh_nodes)
+
+        # Build full system if not built yet
+        if self.K is None:
+            self.build_stiffness_matrix()
+
+        # Apply displacement constraints
+        free_dofs = np.arange(2*num_nodes)
+
+        constrained = []
+        for n in fixed_nodes:
+            constrained.extend([2*n, 2*n+1])
+
+        free_dofs = np.setdiff1d(free_dofs, constrained)
+
+        # Reduced system
+        K_reduced = self.K[np.ix_(free_dofs, free_dofs)]
+        F_reduced = self.F[free_dofs]
+
+        # Solve
+        u_reduced = np.linalg.solve(K_reduced, F_reduced)
+
+        # Fill full displacement vector
+        self.u = np.zeros(2*num_nodes)
+        self.u[free_dofs] = u_reduced
+
+        return self.u.reshape(-1, 2)
+
+    def _constitutive_matrix(self):
+        E = self.E
+        v = self.nu
+
+        coeff = E / (1 - v**2)
+
+        return coeff * np.array([
+            [1, v, 0],
+            [v, 1, 0],
+            [0, 0, (1-v)/2]
+        ])
+
+    def _element_stiffness(self, element, D):
+        """
+        Compute local element stiffness
+        """
+        coords = self.mesh_nodes[element]
+
+        x1, y1 = coords[0]
+        x2, y2 = coords[1]
+        x3, y3 = coords[2]
+
+        A = 0.5 * np.linalg.det(np.array([
+            [1, x1, y1],
+            [1, x2, y2],
+            [1, x3, y3]
+        ]))
+
+        B = (1/(2*A)) * np.array([
+            [y2-y3,     0,  y3-y1,     0,  y1-y2,     0],
+            [0, x3-x2,  0, x1-x3,  0, x2-x1],
+            [x3-x2, y2-y3, x1-x3, y3-y1, x2-x1, y1-y2]
+        ])
+
+        ke = A * (B.T @ D @ B)
+
+        return ke
+
+    def _assemble_global_matrix(self, element, ke):
+        """
+        Map element stiffness into global K
+        """
+        dof_map = []
+        for n in element:
+            dof_map.extend([2*n, 2*n+1])
+
+        dof_map = np.array(dof_map)
+
+        for i in range(6):
+            for j in range(6):
+                self.K[dof_map[i], dof_map[j]] += ke[i, j]
