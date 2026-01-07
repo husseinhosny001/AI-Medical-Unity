@@ -3,3 +3,53 @@
 /mesh/tissue_square.vtk
 /mesh/tissue_layer.stl
 شبكات نظيفة جاهزة.
+/src/FEM/mesh_loader.py
+import numpy as np
+
+
+class SimpleMeshGenerator:
+    """
+    Generates a simple rectangular soft-tissue mesh
+    using triangular elements.
+    """
+
+    def __init__(self, width=1.0, height=1.0, nx=8, ny=8):
+        self.width = width
+        self.height = height
+        self.nx = nx
+        self.ny = ny
+
+    def generate(self):
+        """
+        Output:
+        nodes: Nx2 array
+        elements: Mx3 array (triangle node indices)
+        """
+
+        # Generate grid points
+        xs = np.linspace(0, self.width, self.nx)
+        ys = np.linspace(0, self.height, self.ny)
+
+        nodes = []
+        for y in ys:
+            for x in xs:
+                nodes.append([x, y])
+
+        nodes = np.array(nodes)
+
+        # Triangulate grid
+        elements = []
+        for j in range(self.ny - 1):
+            for i in range(self.nx - 1):
+                n1 = j * self.nx + i
+                n2 = n1 + 1
+                n3 = n1 + self.nx
+                n4 = n3 + 1
+
+                # two triangles per square
+                elements.append([n1, n2, n4])
+                elements.append([n1, n4, n3])
+
+        elements = np.array(elements)
+
+        return nodes, elements
