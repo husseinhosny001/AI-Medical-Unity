@@ -1,2 +1,5 @@
 # Mesh Files
 ملفات STL أو OBJ للأعضاء المختلفة، جاهزة للاستيراد في محاكاة FEM.
+/mesh/tissue_square.vtk
+/mesh/tissue_layer.stl
+شبكات نظيفة جاهزة.
