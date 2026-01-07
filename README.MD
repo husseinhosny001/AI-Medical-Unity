@@ -142,3 +142,4 @@ This folder contains:
 - SystemOverview.pdf → Overview of all system modules
 - IntegrationGuide.pdf → How to integrate AI Controller with FEM simulations
 - ChangeLog.md → Version history
+The project is paused during the conceptual stage.
