@@ -17,3 +17,6 @@ class AIMedicalUnity:
 if __name__ == "__main__":
     system = AIMedicalUnity()
     print(system.summary())
+/src/AI/parameter_guidance.py
+/src/AI/model_loader.py
+/src/AI/utils.py
