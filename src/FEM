@@ -1,3 +1,4 @@
+
 /src/FEM/core.py
 import numpy as np
 
@@ -143,3 +144,78 @@ class SoftTissueFEM2D:
         for i in range(6):
             for j in range(6):
                 self.K[dof_map[i], dof_map[j]] += ke[i, j]
+import numpy as np
+
+print("=== AI Medical Unity — FEM Demo (Colab Version) ===")
+
+# Simple 1D FEM spring model demo
+k = 10.0   # stiffness
+f = 5.0    # applied force
+
+# displacement = force / stiffness
+u = f / k
+
+print("Applied Force =", f)
+print("Spring Stiffness =", k)
+print("Resulting Displacement =", u)
+print("Simulation complete ✓"
+/src/FEM/fem_linear_tissue.py
+K U = F
+
+استيراد  numpy  كـ  np
+
+print ( "=== AI Medical Unity — FEM Tissue Model (Linear  Elastic) ===" )
+
+خصائص المادة
+E =  50e3 معامل يونغ (باسكال)       
+nu =  0.3 نسبة بواسون      
+
+# مصفوفة مرونة الإجهاد المستوي
+C = (E / ( 1  - nu** 2 )) * np.array([
+    [ 1 , nu,  0 ],
+    [nu,  1 ,  0 ],
+    [ 0 ,  0 , ( 1  - nu) /  2 ]
+])
+
+اطبع ( "\nمصفوفة المرونة C:" )
+اطبع (C)
+
+# إحداثيات العقدة
+nodes = np.array([
+    [ 0 ,  0 ],
+    [ 1 ,  0 ],
+    [ 1 ,  1 ],
+    [ 0 ,  1 ]
+])
+
+# عنصر مربع واحد
+عناصر = [[ 0 ,  1 ,  2 ,  3 ]]
+
+# متجه القوة الخارجية (حمل لأسفل فقط على العقدة 2)
+F = np.zeros( 8 )
+F[ 5 ] =  -100.0
+
+# افتراض بسيط للصلابة
+K = np.eye( 8 ) *  1000
+
+# حل KU = F
+U = np.linalg.solve(K, F)
+
+اطبع ( "\nإزاحات العقد:" )
+اطبع (U)
+
+print ( "\nاكتملت المحاكاة ✓" )
+=== AI Medical Unity — FEM Tissue Model (Linear Elasticity) ===
+
+Elasticity Matrix C:
+[[54945.05494505 16483.51648352     0.        ]
+[16483.51648352 54945.05494505     0.        ]
+[    0.             0.         19230.76923077]]
+
+Nodal Displacements:
+[ 0.   0.   0.   0.   0.  -0.1  0.   0. ]
+
+Simulation complete ✓
+U = F / K = 100 / 1000 = 0.1 m
+
+
