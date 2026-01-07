@@ -10,3 +10,6 @@ This folder contains all project documentation including:
 
 Purpose:
 To maintain a structured and professional reference for the full project lifecycle.
+/docs/FEM_Module_Overview.md
+/docs/AI_Guidance_Overview.md
+/docs/PoC1_Whitepaper.md
